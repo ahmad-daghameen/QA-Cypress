@@ -1,4 +1,7 @@
 /// <reference types="cypress" />
+
+import cypress = require("cypress");
+
 // ***********************************************
 // This example commands.ts shows you how to
 // create various custom commands and overwrite
@@ -35,3 +38,22 @@
 //     }
 //   }
 // }
+declare namespace Cypress {
+    interface Chainable<Subject> {
+        //getByPlaceHolder: typeof getByPlaceHolder  ;
+        myCommand: typeof myCommand;
+    }
+}
+//     function getByPlaceHolder(placeholderName: string)
+//     {
+    
+//         return cy.get('[placeholder="' + placeholderName +'"]');
+//     }
+
+// Cypress.Commands.add('getByPlaceHolder' as any , getByPlaceHolder);
+
+function myCommand(placeholderName: string) {
+    return cy.get('[placeholder="' + placeholderName +'"]');
+}
+
+Cypress.Commands.add('myCommand' as any , myCommand as any);

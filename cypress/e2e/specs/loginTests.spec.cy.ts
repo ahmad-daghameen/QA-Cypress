@@ -15,19 +15,23 @@ describe('Login to the Home page', () => {
                 cy.fixture('loginData').as('loginData');
     })
 
+
+    it('Password input filed must be of type Password input',() => { 
+        //cy.fixture('LoginData.json').as('LoginData');
+        loginObj.elements.password().should('have.attr', 'type', 'password');
+    });
+
+
     it('login With Valid Username And Valid Password',() => { 
         //cy.fixture('LoginData.json').as('LoginData');
         cy.get('@loginData').then((data: any) => {
-            loginObj.login(data.BothValid.username, data.BothValid.password);
-            cy.get('#app > div.oxd-layout > div.oxd-layout-navigation > header > div.oxd-topbar-header > div.oxd-topbar-header-title > span > h6').contains("Dashboard");
+            loginObj.loginSuccess(data.BothValid.username, data.BothValid.password);
         });
     });
     
-    it.only('login With Valid User And Invalid Password',() => { 
+    it('login With Valid User And Invalid Password',() => { 
         cy.get('@loginData').then((data: any) => {
-            loginObj.login(data.ValidUsername.username, data.ValidUsername.password);
-            cy.get('.oxd-alert-content').should('exist').and('contain.text', 'Invalid credentials');
-            
+            loginObj.loginFailedInvalidCredintials(data.ValidUsername.username, data.ValidUsername.password);
         });
 
         
@@ -36,35 +40,38 @@ describe('Login to the Home page', () => {
 
     it('login With Invalid User And Valid Password',() => { 
         cy.get('@loginData').then((data: any) => {
-            loginObj.login(data.ValidPassword.username, data.ValidPassword.password);
-            cy.get('.oxd-alert-content').should('exist').and('contain.text', 'Invalid credentials');
+            loginObj.loginFailedInvalidCredintials(data.ValidPassword.username, data.ValidPassword.password);
         });
         
     });
 
     it('login With Invalid User And Invalid Password',() => { 
         cy.get('@loginData').then((data: any) => {
-            loginObj.login(data.BothInvalid.username, data.BothInvalid.password);
-            cy.get('.oxd-alert-content').should('exist').and('contain.text', 'Invalid credentials');
+            loginObj.loginFailedInvalidCredintials(data.BothInvalid.username, data.BothInvalid.password);
         });
     });
   
     it('login With empty fields',() => { 
-        loginObj.login('', '');
-        cy.get('.oxd-alert-content').should('exist').and('contain.text', 'Invalid credentials');
-
+        loginObj.loginFailedRequiredBoth('','');
     });
+
     it('login With empty username',() => { 
         cy.get('@loginData').then((data: any) => {
-            loginObj.login('', data.BothInvalid.password);
-            cy.get('.oxd-alert-content').should('exist').and('contain.text', 'Invalid credentials');
+          loginObj.loginFailedRequiredOne('',data.BothValid.password);
         });
-        
     });
+
     it('login With empty password',() => { 
         cy.get('@loginData').then((data: any) => {
-            loginObj.login( data.BothInvalid.username, '');
-            cy.get('.oxd-alert-content').should('exist').and('contain.text', 'Invalid credentials');
+            loginObj.loginFailedRequiredOne(data.BothValid.username, '');
+          });
+    });
+
+    it('login With Valid Username And Valid Password and all CAPs, testing case sensitivity',() => { 
+        //cy.fixture('LoginData.json').as('LoginData');
+        cy.get('@loginData').then((data: any) => {
+            loginObj.loginFailedInvalidCredintials(data.BothValid.username.toUpperCase(), data.BothValid.password.toUpperCase());
         });
     });
+
 })

@@ -26,6 +26,40 @@ class LoginPage {
         this.elements.loginBtn().click();
     }
 
+    loginSuccess(userName: string, password:string)
+    {
+        this.elements.userName().type(userName);
+        this.elements.password().type(password);
+
+        this.elements.loginBtn().click();
+        cy.get('.oxd-topbar-header-breadcrumb > .oxd-text').contains("Dashboard");
+    }
+    loginFailedInvalidCredintials(userName: string, password:string)
+    {
+        this.elements.userName().type(userName);
+        this.elements.password().type(password);
+
+        this.elements.loginBtn().click();
+        cy.get('.oxd-alert-content').should('exist').and('contain.text', 'Invalid credentials');
+    }
+    loginFailedRequiredBoth(userName: string, password:string)
+    {
+        this.elements.loginBtn().click();
+        cy.get(':nth-child(2) > .oxd-input-group > .oxd-text').should('exist').and('contain.text', 'Required');
+        cy.get(':nth-child(3) > .oxd-input-group > .oxd-text').should('exist').and('contain.text', 'Required');
+    }
+    loginFailedRequiredOne(userName: string, password:string)
+    {
+        if (userName.length == 0) {
+            this.elements.password().type(password);
+        }
+        else if (password.length == 0)
+        {
+            this.elements.userName().type(userName);
+        }
+        this.elements.loginBtn().click();
+        cy.get('.oxd-input-group > .oxd-text').should('exist').and('contain.text', 'Required');
+    }
     forgottPassword(userName: string)
     {   
         this.forgottPasswordElements.forgotPasswordInHomePageBtn().click();

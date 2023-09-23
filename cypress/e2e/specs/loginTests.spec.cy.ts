@@ -18,7 +18,7 @@ describe('Login to the Home page', () => {
 
     it('Password input filed must be of type Password input',() => { 
         //cy.fixture('LoginData.json').as('LoginData');
-        loginObj.elements.password().should('have.attr', 'type', 'password');
+        loginObj.isPassword();
     });
 
 

@@ -1,0 +1,8 @@
+{
+   "BothValid" :{ "username": "Admin",    "password": "admin123"},
+   "ValidUsername" :{ "username": "Admin",    "password": "admin12r3qeer3"},
+   "ValidPassword" :{ "username": "Admindwsdww",    "password": "admin123"},
+   "BothInvalid" :{ "username": "Adminfsdfsd",    "password": "admin123sdfsd"}
+    
+  }
+  

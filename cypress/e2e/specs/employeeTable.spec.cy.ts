@@ -18,7 +18,7 @@ describe('Login to the Home page', () => {
     it('Search for Employee',() => { 
          cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/pim/viewEmployeeList');
 
-         employeeTableobj.checkSearch( [{key: 'ID', value: '0304A7'}, {key: 'Name', value: 'Aasha'}] );
+         employeeTableobj.checkSearch( [{key: 'ID', value: '0362'}, {key: 'Name', value: 'fsg'}] );
     });
 
 

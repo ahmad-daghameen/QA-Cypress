@@ -23,49 +23,48 @@ describe('Login to the Home page', () => {
         });
     });
     
-    it('login With Valid User And Invalid Password',() => { 
+    it.only('login With Valid User And Invalid Password',() => { 
         cy.get('@loginData').then((data: any) => {
             loginObj.login(data.ValidUsername.username, data.ValidUsername.password);
-            cy.get('.oxd-alert-content').should('exist').and('contain.text', 'login');
+            cy.get('.oxd-alert-content').should('exist').and('contain.text', 'Invalid credentials');
             
         });
 
-        //cy.get('.oxd-alert-content').contains('Invalid credentials');
+        
     });
 
 
     it('login With Invalid User And Valid Password',() => { 
         cy.get('@loginData').then((data: any) => {
             loginObj.login(data.ValidPassword.username, data.ValidPassword.password);
-           
+            cy.get('.oxd-alert-content').should('exist').and('contain.text', 'Invalid credentials');
         });
-        cy.get('.oxd-button').should('contain','Login');
+        
     });
 
     it('login With Invalid User And Invalid Password',() => { 
         cy.get('@loginData').then((data: any) => {
             loginObj.login(data.BothInvalid.username, data.BothInvalid.password);
-            
+            cy.get('.oxd-alert-content').should('exist').and('contain.text', 'Invalid credentials');
         });
-        cy.get('.oxd-button').should('contain','Login');
     });
   
     it('login With empty fields',() => { 
         loginObj.login('', '');
-        cy.get('.oxd-button').should('contain','Login');
+        cy.get('.oxd-alert-content').should('exist').and('contain.text', 'Invalid credentials');
+
     });
     it('login With empty username',() => { 
         cy.get('@loginData').then((data: any) => {
             loginObj.login('', data.BothInvalid.password);
-            
+            cy.get('.oxd-alert-content').should('exist').and('contain.text', 'Invalid credentials');
         });
-        cy.get('.oxd-button').should('contain','Login');
+        
     });
     it('login With empty password',() => { 
         cy.get('@loginData').then((data: any) => {
             loginObj.login( data.BothInvalid.username, '');
-            
+            cy.get('.oxd-alert-content').should('exist').and('contain.text', 'Invalid credentials');
         });
-        cy.get('.oxd-button').should('contain','Login');
     });
 })

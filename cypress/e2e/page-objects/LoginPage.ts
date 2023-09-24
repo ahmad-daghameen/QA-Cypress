@@ -4,9 +4,14 @@ class LoginPage {
 
     elements =
         {
-            userName: () => cy.get('#app > div.orangehrm-login-layout > div > div.orangehrm-login-container > div > div.orangehrm-login-slot > div.orangehrm-login-form > form > div:nth-child(2) > div > div:nth-child(2) > input'),
-            password: () => cy.get('#app > div.orangehrm-login-layout > div > div.orangehrm-login-container > div > div.orangehrm-login-slot > div.orangehrm-login-form > form > div:nth-child(3) > div > div:nth-child(2) > input'),
-            loginBtn: () => cy.get('button')
+            userName: () => cy.get(':nth-child(2) > .oxd-input-group > :nth-child(2) > .oxd-input'),
+            password: () => cy.get(':nth-child(3) > .oxd-input-group > :nth-child(2) > .oxd-input'),
+            loginBtn: () => cy.get('button'),
+            LoginRequiredInth1: () => cy.get(':nth-child(2) > .oxd-input-group > .oxd-text'),
+            LoginRequiredInth2: () => cy.get(':nth-child(3) > .oxd-input-group > .oxd-text'),
+            LoginRequired: () => cy.get('.oxd-input-group > .oxd-text'),
+            Dashbord:() => cy.get('.oxd-topbar-header-breadcrumb > .oxd-text'),
+            invalidCredintials:() => cy.get('.oxd-alert-content'),
         }
 
     forgottPasswordElements =
@@ -33,19 +38,20 @@ class LoginPage {
         this.elements.password().type(password);
 
         this.elements.loginBtn().click();
-        cy.get('.oxd-topbar-header-breadcrumb > .oxd-text').contains("Dashboard");
+        this.elements.Dashbord().contains("Dashboard");
     }
     loginFailedInvalidCredintials(userName: string, password: string) {
         this.elements.userName().type(userName);
         this.elements.password().type(password);
 
         this.elements.loginBtn().click();
-        cy.get('.oxd-alert-content').should('exist').and('contain.text', 'Invalid credentials');
+        this.elements.invalidCredintials().should('exist').and('contain.text', 'Invalid credentials');
     }
     loginFailedRequiredBoth(userName: string, password: string) {
         this.elements.loginBtn().click();
-        cy.get(':nth-child(2) > .oxd-input-group > .oxd-text').should('exist').and('contain.text', 'Required');
-        cy.get(':nth-child(3) > .oxd-input-group > .oxd-text').should('exist').and('contain.text', 'Required');
+        this.elements.LoginRequiredInth1().should('exist').and('contain.text', 'Required');
+        this.elements.LoginRequiredInth2().should('exist').and('contain.text', 'Required');
+        
     }
     loginFailedRequiredOne(userName: string, password: string) {
         if (userName.length == 0) {
@@ -55,7 +61,7 @@ class LoginPage {
             this.elements.userName().type(userName);
         }
         this.elements.loginBtn().click();
-        cy.get('.oxd-input-group > .oxd-text').should('exist').and('contain.text', 'Required');
+        this.elements.LoginRequired().should('exist').and('contain.text', 'Required');
     }
     forgottPassword(userName: string) {
         this.forgottPasswordElements.forgotPasswordInHomePageBtn().click();

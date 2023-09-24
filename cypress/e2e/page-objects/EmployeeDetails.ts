@@ -162,7 +162,7 @@ class EmployeeDetails {
 
     }
 
-    addEmployeeAPI(ID: number) {
+    addEmployeeAPI() {
         var x: number = -1;
         cy.fixture('employeeDetails').as('employeeDetails');
 
@@ -190,7 +190,7 @@ class EmployeeDetails {
         });
     }
 
-    checkEmployee(ID: number) {
+    checkEmployee() {
         cy.fixture('employeeDetails').as('employeeDetails');
 
         cy.get('@employeeDetails').then((data: any) => {
@@ -210,7 +210,6 @@ class EmployeeDetails {
             this.FillEmployeeDetails(); 
         });
     });
-    // cy.wait(4000);
     // this.elements.searchHaeader().click();
     // this.elements.emplyeeListSearchSaveBtn().focus().click();
 }

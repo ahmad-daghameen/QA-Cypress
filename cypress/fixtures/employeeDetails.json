@@ -1,0 +1,18 @@
+{
+    "FirstName": "Alicia",
+    "MiddleName": "Lee",
+    "LastName": "Johnson",
+    "NickName": "Mr.",
+    "DriverLicenseNumber": "jGK7aX2sEJq",
+    "LicenseExpiaryDate": "2025-06-27",
+    "SSN": "6348582563",
+    "SIN": "2349842385",
+    "Nationality": "Canadian",
+    "MaritalStatus": "Single",
+    "DateOfBirth": "1989-09-21",
+    "Gender": "F",
+    "Millitaryservice": "1",
+    "Smoker": "N",
+    "Password": "Test@12345#QAZ",
+    "BloodType": "A+"
+}

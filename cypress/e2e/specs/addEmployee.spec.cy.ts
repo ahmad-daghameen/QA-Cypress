@@ -59,24 +59,24 @@ describe('Login to the Home page', () => {
     //     }
     //     ) //then
     // })
-    // after('Delete User', () => {
-    //     cy.request(
-    //         {
-    //             method: 'DELETE',
-    //             url: 'https://opensource-demo.orangehrmlive.com/web/index.php/api/v2/admin/users',
-    //             body:
-    //             {
-    //                 "ids": [CUID],
+    after('Delete User', () => {
+        cy.request(
+            {
+                method: 'DELETE',
+                url: 'https://opensource-demo.orangehrmlive.com/web/index.php/api/v2/admin/users',
+                body:
+                {
+                    "ids": [CUID],
                    
-    //             }
-    //         }
-    //     ).then((response) =>
-    //     {
+                }
+            }
+        ).then((response) =>
+        {
              
-    //         expect(response).property('status').to.equal(200)
-    //     }
-    //     ) 
-    // })
+            expect(response).property('status').to.equal(200)
+        }
+        ) 
+    })
 
 
 

@@ -1,6 +1,6 @@
 class addEmployee{
 
-    emplID :string;
+    emplID :string = "";
 
 elements ={
 
@@ -33,9 +33,9 @@ newEmployee(fName: string, mName: string, lName: string){
     this.elements.oxSwitch().click();
     this.elements.addEmployeeId().invoke('val').then((value) => {
         // Do something with the value
-        this.emplID = value.toString();
+        this.emplID = value !== undefined ? value.toString() : "";
         cy.log(this.emplID);
-      });
+    });
     this.elements. userName().type(fName);
     this.elements. password().type(pass);
     this.elements. confirmPassword().type(pass);

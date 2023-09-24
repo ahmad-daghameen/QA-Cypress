@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "GSG": "npx cypress run --browserchrome --spec cypress/e2e/specs/employeeDetails.spec.cy.ts"
+    "GSG": "npx cypress run --browser chrome --spec cypress/e2e/specs/employeeDetails.spec.cy.ts --env allure=true allure generate allure-results --clean -o allure-report && allure open allure-report  ",
+    "allure_report":"allure generate allure-results --clean -o allure-report && allure open allure-report"
   },
   "keywords": [],
   "author": "",

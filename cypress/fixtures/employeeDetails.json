@@ -1,19 +1,23 @@
 {
-    "FirstName": "Alicia",
-    "MiddleName": "Lee",
-    "LastName": "Johnson",
-    "NickName": "Mr.",
-    "DriverLicenseNumber": "jGK7aX2sEJq",
-    "LicenseExpiaryDate": "2025-06-27",
-    "SSN": "6348582563",
-    "SIN": "2349842385",
-    "Nationality": "Canadian",
-    "MaritalStatus": "Single",
-    "DateOfBirth": "1989-09-21",
-    "Gender": "F",
-    "Millitaryservice": "1",
-    "Smoker": "N",
-    "Password": "Test@12345#QAZ",
-    "BloodType": "A+",
-    "EmployeeId": "0381"
+    "FirstName": "Liam",
+    "MiddleName": "Oscar",
+    "LastName": "Smith",
+    "NickName": "LiamO",
+    "DriverLicenseNumber": "pB9TlH8rCkF",
+    "LicenseExpiaryDate": "2024-03-15",
+    "SSN": "7162739401",
+    "SIN": "4893012674",
+    "Nationality": "American",
+    "MaritalStatus": "Married",
+    "DateOfBirth": "1991-05-13",
+    "Gender": "M",
+    "Millitaryservice": "0",
+    "Smoker": "Y",
+    "Password": "Pass@8765#XCV",
+    "BloodType": "B-",
+    "EmployeeId": "0925"
 }
+
+
+
+

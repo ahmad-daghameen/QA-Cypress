@@ -22,7 +22,7 @@ describe('Login to the Home page', () => {
 
     })
 
-    it.only('Test Add Employee', () => {
+    it('Test Add Employee', () => {
         //EmpDetailsObj.addNewEmployee();
 
         EmpDetailsObj.addEmployeeAPI();
@@ -39,7 +39,10 @@ describe('Login to the Home page', () => {
         //EmpDetailsObj.FillEmployeeDetails();
     });
 
-
+    it('Check Employee In  Grid', () => {
+        EmpDetailsObj.checkEmployeeInTable()
+    }
+    )
 
 
     after('Delete Employee', () => {

@@ -75,6 +75,15 @@ class EmployeeDetails {
 
     }
 
+    tableElements = {
+        fRow: () => cy.get('.oxd-table-body > :nth-child(1) > .oxd-table-row'),
+        idCol: () => cy.get('.oxd-table-body > :nth-child(1) > .oxd-table-row > :nth-child(2) > div'),
+        fnameCol: () => cy.get('.oxd-table-body > :nth-child(1) > .oxd-table-row > :nth-child(3) > div'),
+        lanameCol: () => cy.get('.oxd-table-body > :nth-child(1) > .oxd-table-row > :nth-child(4) > div'),
+
+    }
+
+
     AddEmpelements = {
 
         PIM_MainMenueItem: () => cy.get(".oxd-main-menu-item"),
@@ -178,7 +187,7 @@ class EmployeeDetails {
                         "middleName": data.MiddleName,
                         "lastName": data.LastName,
                         "empPicture": null,
-                        "employeeId":  data.EmployeeId
+                        "employeeId": data.EmployeeId
                     }
                 }
             ).then((response) => {
@@ -195,26 +204,55 @@ class EmployeeDetails {
         cy.fixture('employeeDetails').as('employeeDetails');
 
         cy.get('@employeeDetails').then((data: any) => {
-        //this.elements.employeeIDInSearch().type(this.emplID ).blur();
-        cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/pim/viewEmployeeList');
-        cy.request(
-            {
-                method: 'GET',
-                url: `https://opensource-demo.orangehrmlive.com/web/index.php/api/v2/pim/employees?limit=50&offset=0&model=detailed&employeeId=${data.EmployeeId}&includeEmployees=onlyCurrent&sortField=employee.firstName&sortOrder=ASC`,
+            //this.elements.employeeIDInSearch().type(this.emplID ).blur();
+            cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/pim/viewEmployeeList');
+            cy.request(
+                {
+                    method: 'GET',
+                    url: `https://opensource-demo.orangehrmlive.com/web/index.php/api/v2/pim/employees?limit=50&offset=0&model=detailed&employeeId=${data.EmployeeId}&includeEmployees=onlyCurrent&sortField=employee.firstName&sortOrder=ASC`,
 
-            }
-        ).then((response) => {
+                }
+            ).then((response) => {
 
-            cy.log(response.body.meta.total);
-            expect(response.body.meta.total).to.above(0);
-            cy.visit(`https://opensource-demo.orangehrmlive.com/web/index.php/pim/viewPersonalDetails/empNumber/${response.body.data[0].empNumber}`);
-            this.FillEmployeeDetails(); 
+                cy.log(response.body.meta.total);
+                expect(response.body.meta.total).to.above(0);
+                cy.visit(`https://opensource-demo.orangehrmlive.com/web/index.php/pim/viewPersonalDetails/empNumber/${response.body.data[0].empNumber}`);
+                this.FillEmployeeDetails();
+            });
         });
-    });
-    // this.elements.searchHaeader().click();
-    // this.elements.emplyeeListSearchSaveBtn().focus().click();
-}
 
+
+
+
+        // this.elements.searchHaeader().click();
+        // this.elements.emplyeeListSearchSaveBtn().focus().click();
+    }
+
+    checkEmployeeInTable() {
+        cy.fixture('employeeDetails').as('employeeDetails');
+
+        cy.get('@employeeDetails').then((data: any) => {
+            //this.elements.employeeIDInSearch().type(this.emplID ).blur();
+            cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/pim/viewEmployeeList');
+            cy.request(
+                {
+                    method: 'GET',
+                    url: `https://opensource-demo.orangehrmlive.com/web/index.php/api/v2/pim/employees?limit=50&offset=0&model=detailed&employeeId=${data.EmployeeId}&includeEmployees=onlyCurrent&sortField=employee.firstName&sortOrder=ASC`,
+
+                }
+            ).then((response) => {
+
+                cy.log(response.body.meta.total);
+                expect(response.body.meta.total).to.above(0);
+                
+                //this.tableElements.idCol().should('exist').and('contain.text', `${data.EmployeeId}`);
+                this.tableElements.fnameCol().should('exist').and('contain.text', `${data.FirstName}${data.MiddleName}`);
+                this.tableElements.lanameCol().should('exist').and('contain.text', `${data.LastName}`);
+
+
+            });
+        });
+    }
 
 
 
@@ -240,7 +278,7 @@ class EmployeeDetails {
 
                 expect(response).property('status').to.equal(200);
                 this.userID = response.body.data.id;
-                
+
             }
             )
         });

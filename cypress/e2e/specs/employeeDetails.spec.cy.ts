@@ -23,17 +23,19 @@ describe('Login to the Home page', () => {
     })
 
     it.only('Test Add Employee', () => {
-        cy.log(fName);
         //EmpDetailsObj.addNewEmployee();
+
         EmpDetailsObj.addEmployeeAPI();
-        EmpDetailsObj.checkEmployee();
+        //EmpDetailsObj.deleteEmployee();
+
         //EmpDetailsObj.FillEmployeeDetails();
     })
 
 
 
-    it.skip('Update Employee Details', () => {
-        const empidt = addEmpobj.emplID;
+    it('Update Employee Details', () => {
+        EmpDetailsObj.checkEmployee();
+
         //EmpDetailsObj.FillEmployeeDetails();
     });
 

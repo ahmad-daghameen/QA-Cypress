@@ -132,6 +132,7 @@ class EmployeeDetails {
             this.elements.smoker().type(data.Smoker);
             this.elements.bloodType().type(data.BloodType);
             this.elements.EmployeeNameHeader().click({ force: true });
+            this.elements.personalDetailsSaveBtn().click({ force: true });
 
         });
 
@@ -199,7 +200,7 @@ class EmployeeDetails {
         cy.request(
             {
                 method: 'GET',
-                url: `https://opensource-demo.orangehrmlive.com/web/index.php/api/v2/pim/employees?limit=50&offset=0&model=detailed&employeeId=0${data.EmployeeId}&includeEmployees=onlyCurrent&sortField=employee.firstName&sortOrder=ASC`,
+                url: `https://opensource-demo.orangehrmlive.com/web/index.php/api/v2/pim/employees?limit=50&offset=0&model=detailed&employeeId=${data.EmployeeId}&includeEmployees=onlyCurrent&sortField=employee.firstName&sortOrder=ASC`,
 
             }
         ).then((response) => {

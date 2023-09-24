@@ -10,41 +10,44 @@ const baseUrl = Cypress.config('baseUrl');
 var CUID: number;
 
 
-const addEmpobj : addEmployee = new addEmployee();
-const time :string = addEmpobj.getCurrentTime();
-const fName : string = `Tes${time}`;
+const addEmpobj: addEmployee = new addEmployee();
+const time: string = addEmpobj.getCurrentTime();
+const fName: string = `Tes${time}`;
 describe('Login to the Home page', () => {
 
 
     beforeEach(function () {
         cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login');
         loginObj.login('Admin', 'admin123');
-       
+
     })
 
-    it('Test Add Employee',() => {
+    it.only('Test Add Employee', () => {
         cy.log(fName);
-        EmpDetailsObj.addNewEmployee();
+        //EmpDetailsObj.addNewEmployee();
+        EmpDetailsObj.addEmployeeAPI();
+        EmpDetailsObj.checkEmployee();
+        //EmpDetailsObj.FillEmployeeDetails();
     })
 
 
 
-    it.only('Update Employee Details', () => {
-        const empidt =  addEmpobj.emplID;  
-        EmpDetailsObj.FillEmployeeDetails(empidt);
+    it.skip('Update Employee Details', () => {
+        const empidt = addEmpobj.emplID;
+        //EmpDetailsObj.FillEmployeeDetails();
     });
 
 
 
 
     after('Delete Employee', () => {
-        
+        //EmpDetailsObj.deleteEmployee()
     })
 
 
 
-    
 
-  
+
+
 
 })

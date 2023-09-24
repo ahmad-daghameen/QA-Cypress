@@ -1,6 +1,9 @@
+
 class EmployeeDetails {
 
     emplID: string = "";
+    userID: string = "";
+    empNumber: number = -1;
     menuSelector = (index: number) => `:nth-child(${index}) > .orangehrm-tabs-item`;
 
     elements = {
@@ -32,7 +35,7 @@ class EmployeeDetails {
         ssn: () => cy.get(':nth-child(3) > :nth-child(1) > .oxd-input-group > :nth-child(2) > .oxd-input'),
         sin: () => cy.get(':nth-child(3) > :nth-child(2) > .oxd-input-group > :nth-child(2) > .oxd-input'),
         nationality: () => cy.get(':nth-child(5) > :nth-child(1) > :nth-child(1) > .oxd-input-group > :nth-child(2) > .oxd-select-wrapper > .oxd-select-text'),
-        maritalStatus: () =>  cy.get(':nth-child(2) > .oxd-input-group > :nth-child(2) > .oxd-select-wrapper > .oxd-select-text'),
+        maritalStatus: () => cy.get(':nth-child(2) > .oxd-input-group > :nth-child(2) > .oxd-select-wrapper > .oxd-select-text'),
         dateOfBirth: () => cy.get(':nth-child(1) > .oxd-input-group > :nth-child(2) > .oxd-date-wrapper > .oxd-date-input > .oxd-input[placeholder="yyyy-mm-dd"]'),
         genderMale: () => cy.get(':nth-child(1) > :nth-child(2) > .oxd-radio-wrapper > label > .oxd-radio-input'),
         genderFemale: () => cy.get(':nth-child(2) > :nth-child(2) > .oxd-radio-wrapper > label'),
@@ -61,6 +64,15 @@ class EmployeeDetails {
         contactsDetailsSaveBtn: () => cy.get('.oxd-form-actions > .oxd-button'),
         //#endregion
 
+        //#region 
+        emplyeeListSearchSaveBtn: () => cy.get('.oxd-form-actions > .oxd-button--secondary'),
+        employeeIDInSearch: () => cy.get(':nth-child(2) > .oxd-input'),
+        addEmployeeId: () => cy.get("#app > div.oxd-layout > div.oxd-layout-container > div.oxd-layout-context > div > div > form > div.orangehrm-employee-container > div.orangehrm-employee-form > div:nth-child(1) > div.oxd-grid-2.orangehrm-full-width-grid > div > div > div:nth-child(2) > input"),
+        searchHaeader: () => cy.get("#app > div.oxd-layout > div.oxd-layout-container > div.oxd-layout-context > div > div.oxd-table-filter > div.oxd-table-filter-header > div.oxd-table-filter-header-title > h5"),
+        //#endregion
+
+
+
     }
 
     AddEmpelements = {
@@ -79,8 +91,8 @@ class EmployeeDetails {
     }
 
 
-    FillEmployeeDetails(empidt: string) {
-        cy.visit(`https://opensource-demo.orangehrmlive.com/web/index.php/pim/viewPersonalDetails/empNumber/18`);
+    FillEmployeeDetails() {
+        //cy.visit(`https://opensource-demo.orangehrmlive.com/web/index.php/pim/viewPersonalDetails/empNumber/`);
         cy.fixture('employeeDetails').as('employeeDetails');
         cy.get('@employeeDetails').then((data: any) => {
             //this.elements.fName().type(data.FirstName);
@@ -100,7 +112,7 @@ class EmployeeDetails {
             //#endregion
 
             //#region maritalStatus
-           this.elements.maritalStatus().click();
+            this.elements.maritalStatus().click();
             cy.contains('div', data.MaritalStatus).click({ force: true });
             this.elements.EmployeeNameHeader().click({ force: true });
             //#endregion
@@ -126,7 +138,7 @@ class EmployeeDetails {
 
     }
 
-    addNewEmployee() {
+    addNewEmployeeUI() {
         cy.fixture('employeeDetails').as('employeeDetails');
 
         cy.get('@employeeDetails').then((data: any) => {
@@ -150,14 +162,100 @@ class EmployeeDetails {
 
     }
 
-    deleteEmployee() {
+    addEmployeeAPI(ID: number) {
+        var x: number = -1;
+        cy.fixture('employeeDetails').as('employeeDetails');
+
+        cy.get('@employeeDetails').then((data: any) => {
+            cy.request(
+                {
+                    method: 'POST',
+                    url: 'https://opensource-demo.orangehrmlive.com/web/index.php/api/v2/pim/employees',
+                    body:
+                    {
+                        "firstName": data.FirstName,
+                        "middleName": data.MiddleName,
+                        "lastName": data.LastName,
+                        "empPicture": null,
+                        "employeeId":  data.EmployeeId
+                    }
+                }
+            ).then((response) => {
+
+                expect(response).property('status').to.equal(200);
+                response.body.data.empNumber;
+                cy.log(JSON.stringify(response.body.data));
+            }
+            )
+        });
+    }
+
+    checkEmployee(ID: number) {
+        cy.fixture('employeeDetails').as('employeeDetails');
+
+        cy.get('@employeeDetails').then((data: any) => {
+        //this.elements.employeeIDInSearch().type(this.emplID ).blur();
+        cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/pim/viewEmployeeList');
+        cy.request(
+            {
+                method: 'GET',
+                url: `https://opensource-demo.orangehrmlive.com/web/index.php/api/v2/pim/employees?limit=50&offset=0&model=detailed&employeeId=0${data.EmployeeId}&includeEmployees=onlyCurrent&sortField=employee.firstName&sortOrder=ASC`,
+
+            }
+        ).then((response) => {
+
+            cy.log(response.body.meta.total);
+            expect(response.body.meta.total).to.above(0);
+            cy.visit(`https://opensource-demo.orangehrmlive.com/web/index.php/pim/viewPersonalDetails/empNumber/${response.body.data[0].empNumber}`);
+            this.FillEmployeeDetails(); 
+        });
+    });
+    // cy.wait(4000);
+    // this.elements.searchHaeader().click();
+    // this.elements.emplyeeListSearchSaveBtn().focus().click();
+}
+
+
+
+
+
+    addUser() {
+        cy.fixture('employeeDetails').as('employeeDetails');
+
+        cy.get('@employeeDetails').then((data: any) => {
+            cy.request(
+                {
+                    method: 'POST',
+                    url: 'https://opensource-demo.orangehrmlive.com/web/index.php/api/v2/admin/users',
+                    body:
+                    {
+                        "username": `${data.FirstName}.${data.LastName}`,
+                        "password": data.Password,
+                        "status": true,
+                        "userRoleId": 2,
+                        "empNumber": 75
+                    }
+                }
+            ).then((response) => {
+
+                expect(response).property('status').to.equal(200);
+                this.userID = response.body.data.id;
+                
+            }
+            )
+        });
+    }
+
+
+
+    deleteEmployee(ID: Number) {
         cy.request(
             {
                 method: 'DELETE',
                 url: 'https://opensource-demo.orangehrmlive.com/web/index.php/api/v2/pim/employees',
                 body:
                 {
-                    "ids": [this.emplID],
+                    "ids": [ID],
 
                 }
             }
@@ -176,8 +274,9 @@ class EmployeeDetails {
                 url: 'https://opensource-demo.orangehrmlive.com/web/index.php/api/v2/admin/users',
                 body:
                 {
-                    "ids": [id],
-
+                    "ids": [
+                        this.empNumber
+                    ]
                 }
             }
         ).then((response) => {

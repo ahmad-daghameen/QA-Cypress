@@ -232,25 +232,34 @@ class EmployeeDetails {
         cy.fixture('employeeDetails').as('employeeDetails');
 
         cy.get('@employeeDetails').then((data: any) => {
-            //this.elements.employeeIDInSearch().type(this.emplID ).blur();
             cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/pim/viewEmployeeList');
-            cy.request(
-                {
-                    method: 'GET',
-                    url: `https://opensource-demo.orangehrmlive.com/web/index.php/api/v2/pim/employees?limit=50&offset=0&model=detailed&employeeId=${data.EmployeeId}&includeEmployees=onlyCurrent&sortField=employee.firstName&sortOrder=ASC`,
 
-                }
-            ).then((response) => {
+            this.elements.employeeIDInSearch().type(data.EmployeeId).blur();
+            this.elements.searchHaeader().click({ force: true });
+            this.elements.emplyeeListSearchSaveBtn().focus().click({ force: true });
 
-                cy.log(response.body.meta.total);
-                expect(response.body.meta.total).to.above(0);
-                
-                //this.tableElements.idCol().should('exist').and('contain.text', `${data.EmployeeId}`);
-                this.tableElements.fnameCol().should('exist').and('contain.text', `${data.FirstName}${data.MiddleName}`);
-                this.tableElements.lanameCol().should('exist').and('contain.text', `${data.LastName}`);
+            this.tableElements.idCol().should('exist').and('contain.text', `${data.EmployeeId}`);
+            this.tableElements.fnameCol().should('exist').and('contain.text', `${data.FirstName} ${data.MiddleName}`);
+            this.tableElements.lanameCol().should('exist').and('contain.text', `${data.LastName}`);
+
+            // cy.request(
+            //     {
+            //         method: 'GET',
+            //         url: `https://opensource-demo.orangehrmlive.com/web/index.php/api/v2/pim/employees?limit=50&offset=0&model=detailed&employeeId=${data.EmployeeId}&includeEmployees=onlyCurrent&sortField=employee.firstName&sortOrder=ASC`,
+
+            //     }
+            // ).then((response) => {
+
+            //     cy.log(response.body.meta.total);
+            //     expect(response.body.meta.total).to.above(0);
+
+            //     this.tableElements.idCol().should('exist').and('contain.text', `${data.EmployeeId}`);
+            //     this.tableElements.fnameCol().should('exist').and('contain.text', `${data.FirstName}${data.MiddleName}`);
+            //     this.tableElements.lanameCol().should('exist').and('contain.text', `${data.LastName}`);
 
 
-            });
+            // });
+
         });
     }
 

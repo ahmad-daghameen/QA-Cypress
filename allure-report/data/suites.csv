@@ -1,4 +1,4 @@
 "Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
-"passed","Sat Sep 30 09:34:12 IDT 2023","Sat Sep 30 09:34:20 IDT 2023","7606","","Login to the Home page","","","","Update Employee Details",""
-"passed","Sat Sep 30 09:34:20 IDT 2023","Sat Sep 30 09:34:23 IDT 2023","3695","","Login to the Home page","","","","Check Employee In  Grid",""
-"passed","Sat Sep 30 09:34:09 IDT 2023","Sat Sep 30 09:34:12 IDT 2023","3457","","Login to the Home page","","","","Test Add Employee",""
+"passed","Sat Sep 30 10:09:09 IDT 2023","Sat Sep 30 10:09:14 IDT 2023","4301","","Login to the Home page","","","","Check Employee In  Grid",""
+"passed","Sat Sep 30 10:08:56 IDT 2023","Sat Sep 30 10:08:59 IDT 2023","3619","","Login to the Home page","","","","Test Add Employee",""
+"failed","Sat Sep 30 10:08:59 IDT 2023","Sat Sep 30 10:09:09 IDT 2023","10014","","Login to the Home page","","","","Update Employee Details",""

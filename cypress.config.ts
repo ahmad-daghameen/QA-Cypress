@@ -3,9 +3,10 @@ const allureWriter = require('@shelex/cypress-allure-plugin/writer');
 export default defineConfig({
   projectId: 'agsfgi',
   e2e: {
+    specPattern: "cypress/e2e/**/*.{js,jsx,ts,tsx}",
+    baseUrl: "https://opensource-demo.orangehrmlive.com/web/index.php",
     setupNodeEvents(on, config) {
       allureWriter(on, config);
-      // implement node event listeners here
       return config;
     },
     env: {

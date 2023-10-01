@@ -1,5 +1,6 @@
 
 import LoginPage from "../page-objects/LoginPage"
+import Selector from "../page-objects/Selector"
 
 const loginObj:LoginPage = new LoginPage();
 

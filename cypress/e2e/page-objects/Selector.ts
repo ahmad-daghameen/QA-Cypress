@@ -1,8 +1,10 @@
 class Selector{
 
  SelectSpan(){
-    return cy.get('.orangehrm-attendance-card-bar').contains('span','today');
+    return cy.contains('p','Time at Work').parents().eq(2).contains('span','Today');
 }
 
     
 }
+
+export default Selector;

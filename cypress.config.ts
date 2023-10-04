@@ -10,6 +10,7 @@ export default defineConfig({
       return config;
     },
     env: {
+      snapshotOnly: true,
       allure: true,
       download_dir: './cypress/downloads',
       reporter: "mochawesome",

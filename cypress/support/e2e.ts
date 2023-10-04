@@ -20,3 +20,4 @@ import './commands'
 // require('./commands')
 import '@shelex/cypress-allure-plugin';
 import 'cypress-plugin-api';
+import '@faker-js/faker';

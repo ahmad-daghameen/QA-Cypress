@@ -26,7 +26,7 @@ describe('Number of items in the candidates Grid Must equal the number of items 
            
             candidatesObj.response = response;
 
-            // candidatesObj.UpdateStatus(response.body.data.id)
+             candidatesObj.UpdateStatus(response.body.data.id)
 
             
         });

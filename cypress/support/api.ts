@@ -4,7 +4,8 @@
 const baseUrl = 'https://conduit.productionready.io/api/';
 
 export const URLs = {
-    users: `${baseUrl}users`
+    users: `${baseUrl}users`,
+    
 }
 
 
@@ -42,3 +43,5 @@ export const apiOptions = (u: string, m:HttpMethod, p: any) => {
         payload: p
     }
 }
+
+

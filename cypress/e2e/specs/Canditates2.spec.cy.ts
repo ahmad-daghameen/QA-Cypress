@@ -34,8 +34,14 @@ describe('Number of items in the candidates Grid Must equal the number of items 
 
 
 
-    it('Cxxx2: schedule interview for shortlisted candidate', () => {
+    it('Cxxx2: shortlist candidate', () => {
         candidatesObj.ShortList()
+
+    });
+
+
+    it('Cxxx3: schedule interview for shortlisted candidate', () => {
+        candidatesObj.Schedule_Interview()
 
     });
 

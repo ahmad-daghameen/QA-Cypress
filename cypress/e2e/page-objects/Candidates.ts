@@ -1,3 +1,6 @@
+import { HttpMethod, apiOptions, callApi } from "../../support/api";
+import addCandidate from "../../support/helpers/CandidatesHelper";
+
 export default class candidates {
 
     elements = {
@@ -11,7 +14,10 @@ export default class candidates {
         SearchBtn: () => cy.get('.oxd-form-actions > .oxd-button--secondary'),
         suggestionList: () => cy.get('.oxd-autocomplete-option > span'),
         firstRowEye: () => cy.get('.oxd-table-cell-actions > :nth-child(1) > .oxd-icon'),
-
+        saveShortListNote: () => cy.get('.oxd-textarea'),
+        interviewDate: () => cy.get('.oxd-date-input > .oxd-input'),
+        interviewer: () => cy.get('.oxd-autocomplete-text-input > input'),
+        interviewTitle: () => cy.get(':nth-child(2) > .oxd-grid-3 > :nth-child(1) > .oxd-input-group > :nth-child(2) > .oxd-input'),
     }
 
     response = {
@@ -38,9 +44,7 @@ export default class candidates {
         debugger
         this.elements.shortlist().click({ force: true });
 
-        //this.elements.save_shortList().should('be.visible');
 
-        //this.elements.save_shortList().click({ force: true });
     }
 
     ShortList() {
@@ -58,21 +62,49 @@ export default class candidates {
 
         this.elements.save_shortListHeader().should('be.visible');
         cy.intercept('PUT', `https://opensource-demo.orangehrmlive.com/web/index.php/api/v2/recruitment/candidates/${id}/shortlist`).as('postRequest');
-
+        this.elements.saveShortListNote().clear().type(`${this.response.body.data.firstName}`);
         this.elements.save_shortList().click({ force: true });
-        //cy.visit(`https://opensource-demo.orangehrmlive.com/web/index.php/api/v2/recruitment/candidates/${id}/shortlist`);
-        cy.wait('@postRequest').then((intercepted) => {
-            return new  Cypress.Promise((resolve) => {
-                cy.log(`Response is: ${JSON.stringify(intercepted.response)}`)
-               resolve('Operation Completed');
-            });
-         });
-        //this.elements.shortlist().click({ force: true });
-        //  this.elements.shortListHeader().should('be.visible');
+       
+       
 
-        //  this.elements.save_shortList().click({ force: true });
+
+          
+        callApi(apiOptions(`https://opensource-demo.orangehrmlive.com/web/index.php/api/v2/recruitment/candidates/${id}/shedule-interview`, HttpMethod.POST,addCandidate.GenerateInterviewInfo())).then((response) => {
+            expect(response.status).to.eq(200);
+            cy.log(`Response: ${JSON.stringify(response)}`);
+                    
+        });
+
+
+
 
     }
+
+
+    Schedule_Interview(){
+var id = this.response.body.data.id;
+        cy.visit(`https://opensource-demo.orangehrmlive.com/web/index.php/recruitment/viewCandidates`);
+        cy.log(`CandidateID is ${id}`)
+
+        this.elements.SearchCanName().clear().type(`${this.response.body.data.firstName}`);
+        cy.wait(1000);
+        this.elements.suggestionList().click({ force: true });
+        this.elements.SearchBtn().click({ force: true });
+        this.elements.firstRowEye().click({ force: true });
+        this.elements.shortListHeader().should('be.visible');
+        this.elements.shortlist().click({ force: true });
+        this.elements.interviewDate().invoke('val', '10/10/2023').trigger('change');
+        this.elements.interviewer().clear().type(`Dominic`);
+        cy.wait(1000);
+        this.elements.interviewer().parent().contains('span','Odis  Adalwin').click({ force: true });
+        this.elements.interviewTitle().clear().type(`Dominic`);
+
+        cy.intercept('POST', `https://opensource-demo.orangehrmlive.com/web/index.php/api/v2/recruitment/candidates/${id}/shedule-interview`).as('postRequest');
+        this.elements.save_shortList().click({ force: true });
+      
+       
+    }
+
 }
 
 

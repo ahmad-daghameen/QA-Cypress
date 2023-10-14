@@ -57,3 +57,4 @@ function myCommand(placeholderName: string) {
 }
 
 Cypress.Commands.add('myCommand' as any , myCommand as any);
+

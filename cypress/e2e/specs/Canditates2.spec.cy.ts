@@ -41,8 +41,17 @@ describe('Number of items in the candidates Grid Must equal the number of items 
 
 
     it('Cxxx3: schedule interview for shortlisted candidate', () => {
+
         candidatesObj.Schedule_Interview()
 
     });
+
+
+    it.only('Cxxx3: Search for a record in the Table', () => {
+
+
+        candidatesObj.searchTableByColumnValues('https://opensource-demo.orangehrmlive.com/web/index.php/recruitment/viewCandidates',['','Mihai Valentin Georgescu', '()', '2023-10-17', '']);
+
+    })
 
 });

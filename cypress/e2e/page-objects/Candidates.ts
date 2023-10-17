@@ -18,6 +18,8 @@ export default class candidates {
         interviewDate: () => cy.get('.oxd-date-input > .oxd-input'),
         interviewer: () => cy.get('.oxd-autocomplete-text-input > input'),
         interviewTitle: () => cy.get(':nth-child(2) > .oxd-grid-3 > :nth-child(1) > .oxd-input-group > :nth-child(2) > .oxd-input'),
+        cell: (rid: number, cid: number) => cy.get(`.oxd-table-body > :nth-child(${rid}) > .oxd-table-row > :nth-child(${cid}) > div`),
+        cell2: (rid: number, cid: number) => cy.get(`#app > div.oxd-layout > div.oxd-layout-container > div.oxd-layout-context > div > div.orangehrm-paper-container > div.orangehrm-container > div > div.oxd-table-body > div:nth-child(${rid}) > div > div:nth-child(${cid}) > div`),
     }
 
     response = {
@@ -64,15 +66,15 @@ export default class candidates {
         cy.intercept('PUT', `https://opensource-demo.orangehrmlive.com/web/index.php/api/v2/recruitment/candidates/${id}/shortlist`).as('postRequest');
         this.elements.saveShortListNote().clear().type(`${this.response.body.data.firstName}`);
         this.elements.save_shortList().click({ force: true });
-       
-       
 
 
-          
-        callApi(apiOptions(`https://opensource-demo.orangehrmlive.com/web/index.php/api/v2/recruitment/candidates/${id}/shedule-interview`, HttpMethod.POST,addCandidate.GenerateInterviewInfo())).then((response) => {
+
+
+
+        callApi(apiOptions(`https://opensource-demo.orangehrmlive.com/web/index.php/api/v2/recruitment/candidates/${id}/shedule-interview`, HttpMethod.POST, addCandidate.GenerateInterviewInfo())).then((response) => {
             expect(response.status).to.eq(200);
             cy.log(`Response: ${JSON.stringify(response)}`);
-                    
+
         });
 
 
@@ -81,8 +83,8 @@ export default class candidates {
     }
 
 
-    Schedule_Interview(){
-var id = this.response.body.data.id;
+    Schedule_Interview() {
+        var id = this.response.body.data.id;
         cy.visit(`https://opensource-demo.orangehrmlive.com/web/index.php/recruitment/viewCandidates`);
         cy.log(`CandidateID is ${id}`)
 
@@ -96,13 +98,68 @@ var id = this.response.body.data.id;
         this.elements.interviewDate().invoke('val', '10/10/2023').trigger('change');
         this.elements.interviewer().clear().type(`Dominic`);
         cy.wait(1000);
-        this.elements.interviewer().parent().contains('span','Odis  Adalwin').click({ force: true });
+        this.elements.interviewer().parent().contains('span', 'Odis  Adalwin').click({ force: true });
         this.elements.interviewTitle().clear().type(`Dominic`);
 
         cy.intercept('POST', `https://opensource-demo.orangehrmlive.com/web/index.php/api/v2/recruitment/candidates/${id}/shedule-interview`).as('postRequest');
         this.elements.save_shortList().click({ force: true });
-      
-       
+
+
+    }
+
+
+    // searchTableByColumnValues(url: string, columnValues: string[]) {
+    //         cy.visit(url);
+
+    //     cy.get('.orangehrm-container > .oxd-table > .oxd-table-body').within(() => {
+    //       cy.get('.oxd-table-row').each((row) => {
+    //         let allValuesMatch = true;
+
+    //         cy.wrap(columnValues).each((expectedValue: string, index) => {
+    //           cy.get(`.oxd-table-cell:eq(${index})`).should('contain', expectedValue);
+
+    //           cy.get(`.oxd-table-cell:eq(${index})`).invoke('text').then((actualValue: string) => {
+    //             if (actualValue.trim() !== expectedValue) {
+    //               allValuesMatch = false;
+    //             }
+    //           });
+    //         });
+
+    //         if (allValuesMatch) {
+    //           row.click();
+    //         }
+    //       });
+    //     });
+    //   }
+
+
+
+    searchTableByColumnValues(url: string, columnValues: string[]) {
+        cy.visit(url);
+        cy.get('.orangehrm-container > .oxd-table > .oxd-table-body').within(() => {
+            cy.get('.oxd-table-row').each((row, rowIndex) => {
+                // if (rowIndex > 0) {
+                    let allValuesMatch = true;
+
+                    cy.wrap(columnValues).each((expectedValue: string, columnIndex) => {
+                        // if (columnIndex > 1) {
+                            this.elements.cell2(rowIndex + 1, columnIndex + 2).should('contain', expectedValue);
+
+                            this.elements.cell2(rowIndex + 1, columnIndex + 2).invoke('text').then((actualValue) => {
+                                if (actualValue.trim() !== expectedValue) {
+                                    allValuesMatch = false;
+                                }
+                            });
+                        // }
+                    });
+
+                    if (allValuesMatch) {
+                        row.click();
+                    // }
+                }
+            });
+
+        });
     }
 
 }

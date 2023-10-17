@@ -18,8 +18,8 @@ export default class candidates {
         interviewDate: () => cy.get('.oxd-date-input > .oxd-input'),
         interviewer: () => cy.get('.oxd-autocomplete-text-input > input'),
         interviewTitle: () => cy.get(':nth-child(2) > .oxd-grid-3 > :nth-child(1) > .oxd-input-group > :nth-child(2) > .oxd-input'),
-        cell: (rid: number, cid: number) => cy.get(`.oxd-table-body > :nth-child(${rid}) > .oxd-table-row > :nth-child(${cid}) > div`),
-        cell2: (rid: number, cid: number) => cy.get(`#app > div.oxd-layout > div.oxd-layout-container > div.oxd-layout-context > div > div.orangehrm-paper-container > div.orangehrm-container > div > div.oxd-table-body > div:nth-child(${rid}) > div > div:nth-child(${cid}) > div`),
+        cell: (rid: number, cid: number) => cy.get(`.oxd-table-body > :nth-child(${rid}) > .oxd-table-row > :nth-child(${cid})`),
+        cell2: (rid: number, cid: number) => cy.get(`#app > div.oxd-layout > div.oxd-layout-container > div.oxd-layout-context > div > div.orangehrm-paper-container > div.orangehrm-container > div > div.oxd-table-body > div:nth-child(${rid}) > div > div:nth-child(${cid})`),
     }
 
     response = {
@@ -143,16 +143,16 @@ export default class candidates {
 
                     cy.wrap(columnValues).each((expectedValue: string, columnIndex) => {
                         // if (columnIndex > 1) {
-                            this.elements.cell2(rowIndex + 1, columnIndex + 2).should('contain', expectedValue);
+                            this.elements.cell(rowIndex + 1, columnIndex + 2).should('contain', expectedValue);
 
-                            this.elements.cell2(rowIndex + 1, columnIndex + 2).invoke('text').then((actualValue) => {
+                            this.elements.cell(rowIndex + 1, columnIndex + 2).invoke('text').then((actualValue) => {
+                                cy.log(`Actual Value: ${actualValue.trim()}, expectedValue: ${expectedValue}`);
                                 if (actualValue.trim() !== expectedValue) {
                                     allValuesMatch = false;
                                 }
                             });
                         // }
                     });
-
                     if (allValuesMatch) {
                         row.click();
                     // }

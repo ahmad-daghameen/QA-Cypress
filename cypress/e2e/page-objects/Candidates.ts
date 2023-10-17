@@ -140,9 +140,11 @@ export default class candidates {
             cy.get('.oxd-table-row').each((row, rowIndex) => {
                 // if (rowIndex > 0) {
                     let allValuesMatch = true;
+                    row.click();
 
                     cy.wrap(columnValues).each((expectedValue: string, columnIndex) => {
                         // if (columnIndex > 1) {
+                            var x = cy.get(`.oxd-table-body > :nth-child(${rowIndex + 1}) > .oxd-table-row > :nth-child(${columnIndex + 2})`);
                             this.elements.cell(rowIndex + 1, columnIndex + 2).should('contain', expectedValue);
 
                             this.elements.cell(rowIndex + 1, columnIndex + 2).invoke('text').then((actualValue) => {

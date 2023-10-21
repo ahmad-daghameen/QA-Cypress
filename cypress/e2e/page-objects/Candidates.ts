@@ -136,14 +136,15 @@ export default class candidates {
 
     searchTableByColumnValues(url: string, columnValues: string[]) {
         cy.visit(url);
+        
         cy.get('.orangehrm-container > .oxd-table > .oxd-table-body').within(() => {
+            //cy.get('.oxd-table-row').should('have.length.gt', 0);
             cy.get('.oxd-table-row').each((row, rowIndex) => {
                 // if (rowIndex > 0) {
                     let allValuesMatch = true;
-                    row.click();
-
                     cy.wrap(columnValues).each((expectedValue: string, columnIndex) => {
                         // if (columnIndex > 1) {
+                            cy.get(`.oxd-table-body > :nth-child(${rowIndex + 1}) > .oxd-table-row > :nth-child(${columnIndex + 2})`, { timeout: 10000 }).should('have.length.gt', 1);
                             var x = cy.get(`.oxd-table-body > :nth-child(${rowIndex + 1}) > .oxd-table-row > :nth-child(${columnIndex + 2})`);
                             this.elements.cell(rowIndex + 1, columnIndex + 2).should('contain', expectedValue);
 

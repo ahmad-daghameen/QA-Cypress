@@ -1,4 +1,8 @@
+import { faker } from "@faker-js/faker";
+import adduser from "../../support/helpers/signupHelper";
+import LoginPage from "./LoginPage";
 
+const loginObj: LoginPage = new LoginPage();
 class EmployeeDetails {
 
     emplID: string = "";
@@ -189,16 +193,93 @@ class EmployeeDetails {
                         "empPicture": null,
                         "employeeId": data.EmployeeId
                     }
+
                 }
             ).then((response) => {
 
                 expect(response).property('status').to.equal(200);
                 response.body.data.empNumber;
+                x = response.body.data.empNumber;
                 cy.log(JSON.stringify(response.body.data));
+                this.addUser(response.body.data.empNumber);
             }
             )
         });
     }
+
+
+    
+
+
+    addEmployeeAPI2() {
+        var x: number = -1;
+        cy.fixture('employeeDetails').as('employeeDetails');
+
+        cy.get('@employeeDetails').then((data: any) => {
+            cy.api(
+                {
+                    method: 'POST',
+                    url: 'https://opensource-demo.orangehrmlive.com/web/index.php/api/v2/pim/employees',
+                    body:
+                    {
+                        "firstName": data.FirstName,
+                        "middleName": data.MiddleName,
+                        "lastName": data.LastName,
+                        "empPicture": null,
+                        "employeeId": data.EmployeeId
+                    }
+                }
+            ).then((response) => {
+
+                expect(response).property('status').to.equal(200);
+                response.body.data.empNumber;
+                x = response.body.data.empNumber;
+                cy.log(JSON.stringify(response.body.data));
+                this.addUser2(response.body.data.employeeId);
+            }
+            )
+        });
+        return x;
+    }
+
+    addUser2(empID: number) : object{
+        cy.log(`EmpNumber is ${empID}`)
+        var prom ={};
+        cy.fixture('employeeDetails').as('employeeDetails');
+
+        cy.get('@employeeDetails').then((data: any) => {
+            cy.api(
+                {
+                    method: 'POST',
+                    url: 'https://opensource-demo.orangehrmlive.com/web/index.php/api/v2/admin/users',
+                    body:
+                    {
+                        "username": `${faker.internet.userName}`,
+                        "password": `${faker.internet.password}`,
+                        "status": true,
+                        "userRoleId": 2,
+                        "empNumber": empID
+                    }
+                }
+            ).then((response) => {
+
+                expect(response).property('status').to.equal(200);
+                this.userID = response.body.data.id;
+                cy.log(JSON.stringify(response.body));
+                prom = response;
+
+                loginObj.login(response.body.data.username, response.body.data.password);
+
+            }
+            )
+        });
+        return prom;
+    }
+
+
+
+
+
 
     checkEmployee() {
         cy.fixture('employeeDetails').as('employeeDetails');
@@ -266,7 +347,7 @@ class EmployeeDetails {
 
 
 
-    addUser() {
+    addUser(empID: number) {
         cy.fixture('employeeDetails').as('employeeDetails');
 
         cy.get('@employeeDetails').then((data: any) => {
@@ -280,14 +361,14 @@ class EmployeeDetails {
                         "password": data.Password,
                         "status": true,
                         "userRoleId": 2,
-                        "empNumber": 75
+                        "empNumber": empID
                     }
                 }
             ).then((response) => {
 
                 expect(response).property('status').to.equal(200);
                 this.userID = response.body.data.id;
-
+                cy.log(JSON.stringify(response.body));
             }
             )
         });

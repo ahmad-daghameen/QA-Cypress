@@ -201,7 +201,6 @@ class EmployeeDetails {
                 response.body.data.empNumber;
                 x = response.body.data.empNumber;
                 cy.log(JSON.stringify(response.body.data));
-                this.addUser(response.body.data.empNumber);
             }
             )
         });
@@ -235,47 +234,49 @@ class EmployeeDetails {
                 response.body.data.empNumber;
                 x = response.body.data.empNumber;
                 cy.log(JSON.stringify(response.body.data));
-                this.addUser2(response.body.data.employeeId);
+               
             }
             )
         });
         return x;
     }
 
-    addUser2(empID: number) : object{
-        cy.log(`EmpNumber is ${empID}`)
-        var prom ={};
-        cy.fixture('employeeDetails').as('employeeDetails');
+    addUser2(username: string, password: string, emplid: number) {
 
-        cy.get('@employeeDetails').then((data: any) => {
-            cy.api(
+        cy.api(
+            {
+                method: 'POST',
+                url: 'https://opensource-demo.orangehrmlive.com/web/index.php/api/v2/admin/users',
+                body:
                 {
-                    method: 'POST',
-                    url: 'https://opensource-demo.orangehrmlive.com/web/index.php/api/v2/admin/users',
-                    body:
-                    {
-                        "username": `${faker.internet.userName}`,
-                        "password": `${faker.internet.password}`,
-                        "status": true,
-                        "userRoleId": 2,
-                        "empNumber": empID
-                    }
+                    "username": username,
+                    "password": password,
+                    "status": true,
+                    "userRoleId": 2,
+                    "empNumber": emplid,
                 }
-            ).then((response) => {
-
-                expect(response).property('status').to.equal(200);
-                this.userID = response.body.data.id;
-                cy.log(JSON.stringify(response.body));
-                prom = response;
-
-                loginObj.login(response.body.data.username, response.body.data.password);
-
             }
-            )
-        });
-        return prom;
+        ).then((response) => {
+
+            expect(response).property('status').to.equal(200);
+            cy.log(JSON.stringify(response.body));
+            this.logout();
+            cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login');
+            loginObj.login(response.body.data.username, response.body.data.password);
+
+        }
+        )
     }
 
+    logout(){
+        cy.api(
+            {
+                method: 'GET',
+                url: 'https://opensource-demo.orangehrmlive.com/web/index.php/auth/logout',
+                
+            }
+        )
+    }
 
 
 

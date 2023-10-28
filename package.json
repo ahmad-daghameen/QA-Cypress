@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "allure-commandline": "^2.24.0",
-    "cypress-plugin-api": "^2.11.1"
+    "cypress-plugin-api": "^2.11.1",
+    "xlsx": "^0.18.5"
   }
 }

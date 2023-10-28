@@ -1,4 +1,5 @@
 import { defineConfig } from "cypress";
+//import XLSX
 const allureWriter = require('@shelex/cypress-allure-plugin/writer');
 export default defineConfig({
   projectId: 'agsfgi',
@@ -7,6 +8,16 @@ export default defineConfig({
     baseUrl: "https://opensource-demo.orangehrmlive.com/web/index.php",
     setupNodeEvents(on, config) {
       allureWriter(on, config);
+
+      on('task', {
+        convertXlsxToJson(xlsxPath){
+         // const workbook = XLSX.readFile(xlsxPath); 
+        }
+      })
+
+
+
+
       return config;
     },
     env: {

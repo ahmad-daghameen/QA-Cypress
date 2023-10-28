@@ -10,8 +10,8 @@ class LoginPage {
             LoginRequiredInth1: () => cy.get(':nth-child(2) > .oxd-input-group > .oxd-text'),
             LoginRequiredInth2: () => cy.get(':nth-child(3) > .oxd-input-group > .oxd-text'),
             LoginRequired: () => cy.get('.oxd-input-group > .oxd-text'),
-            Dashbord:() => cy.get('.oxd-topbar-header-breadcrumb > .oxd-text'),
-            invalidCredintials:() => cy.get('.oxd-alert-content'),
+            Dashbord: () => cy.get('.oxd-topbar-header-breadcrumb > .oxd-text'),
+            invalidCredintials: () => cy.get('.oxd-alert-content'),
         }
 
     forgottPasswordElements =
@@ -33,6 +33,16 @@ class LoginPage {
         this.elements.loginBtn().click();
     }
 
+    logout() {
+        cy.api(
+            {
+                method: 'GET',
+                url: 'https://opensource-demo.orangehrmlive.com/web/index.php/auth/logout',
+            }
+        );
+        cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login');
+    }
+
     loginSuccess(userName: string, password: string) {
         this.elements.userName().type(userName);
         this.elements.password().type(password);
@@ -51,7 +61,7 @@ class LoginPage {
         this.elements.loginBtn().click();
         this.elements.LoginRequiredInth1().should('exist').and('contain.text', 'Required');
         this.elements.LoginRequiredInth2().should('exist').and('contain.text', 'Required');
-        
+
     }
     loginFailedRequiredOne(userName: string, password: string) {
         if (userName.length == 0) {
